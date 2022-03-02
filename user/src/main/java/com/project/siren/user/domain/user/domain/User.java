@@ -6,7 +6,7 @@ import lombok.*;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "user")
+@Table(name = "\"user\"")
 @Getter
 @ToString(of = {"id", "email", "nickname"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -17,7 +17,7 @@ public class User extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "email", updatable = false, nullable = false, unique = true)
+    @Column(name = "email", updatable = false, nullable = false)
     private String email;
 
     @Column(name = "password", nullable = false)
