@@ -11,7 +11,7 @@ public class JoinUserResponse {
 
     private User user;
 
-    public static JoinUserResponse toResonse(User user) {
+    public static JoinUserResponse toResponse(User user) {
         return new JoinUserResponse(user);
     }
 }

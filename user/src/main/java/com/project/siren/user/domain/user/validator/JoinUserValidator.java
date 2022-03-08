@@ -9,7 +9,7 @@ import org.springframework.validation.Validator;
 
 @Component
 @RequiredArgsConstructor
-public class UserValidator implements Validator {
+public class JoinUserValidator implements Validator {
 
     private final UserService userService;
 
@@ -26,7 +26,7 @@ public class UserValidator implements Validator {
 
         JoinUserRequest joinUserRequest = (JoinUserRequest) target;
         boolean         hasUser         = userService.findByEmail(joinUserRequest.getEmail()).isEmpty();
-        if (hasUser) {
+        if (!hasUser) {
             errors.rejectValue("email", "Duplicate", "중복된 이메일이 존재합니다. 다시 확인해주세요.");
         }
     }

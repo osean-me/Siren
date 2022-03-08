@@ -4,7 +4,7 @@ import com.project.siren.user.domain.user.domain.User;
 import com.project.siren.user.domain.user.dto.request.JoinUserRequest;
 import com.project.siren.user.domain.user.dto.response.JoinUserResponse;
 import com.project.siren.user.domain.user.service.UserService;
-import com.project.siren.user.domain.user.validator.UserValidator;
+import com.project.siren.user.domain.user.validator.JoinUserValidator;
 import com.project.siren.user.global.response.BasicResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -23,8 +23,8 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 public class UserController {
 
-    private final UserService   userService;
-    private final UserValidator userValidator;
+    private final UserService       userService;
+    private final JoinUserValidator userValidator;
 
     /**
      * 회원가입 핸들러
@@ -38,7 +38,7 @@ public class UserController {
         userValidator.validate(joinUserRequest, bindingResult);
         if (bindingResult.hasErrors()) throw new BindException(bindingResult);
         User             user             = userService.join(joinUserRequest.toEntity());
-        JoinUserResponse joinUserResponse = JoinUserResponse.toResonse(user);
-        return ResponseEntity.status(HttpStatus.CREATED).body(BasicResponse.create(true, joinUserResponse));
+        JoinUserResponse joinUserResponse = JoinUserResponse.toResponse(user);
+        return ResponseEntity.status(HttpStatus.CREATED).body(BasicResponse.success(joinUserResponse));
     }
 }

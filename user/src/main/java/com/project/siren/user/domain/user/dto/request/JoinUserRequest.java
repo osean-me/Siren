@@ -1,20 +1,24 @@
 package com.project.siren.user.domain.user.dto.request;
 
 import com.project.siren.user.domain.user.domain.User;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 
 @Getter
-@Setter
+@Builder
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class JoinUserRequest {
 
     @NotNull(message = "이메일을 입력해주세요.")
     @Email(message = "이메일 양식에 맞게 입력해주세요.")
     private String email;
+
+    @NotNull(message = "전화번호를 입력해주세요.")
+    private String contact;
 
     @NotNull(message = "패스워드를 입력해주세요.")
     @Length(min = 12, message = "비밀번호는 12자 이상 입력해주세요.")
@@ -27,6 +31,7 @@ public class JoinUserRequest {
     public User toEntity() {
         return User.builder()
                 .email(this.email)
+                .contact(this.contact)
                 .password(this.password)
                 .nickname(this.nickname)
                 .build();
