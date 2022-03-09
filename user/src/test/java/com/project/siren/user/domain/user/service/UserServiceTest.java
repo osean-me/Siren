@@ -8,22 +8,24 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.AdditionalAnswers.returnsFirstArg;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class) // Mockito 를 이용한 단위 테스트를 위해 선언한다.
 class UserServiceTest {
 
     // @Mock > 자동으로 Mock 객체를 주입해주지만, Interface 의 구현체 중 선택해야 한다면 아래의 방식을 이용한다.
-    private final UserRepository userRepository = Mockito.mock(UserRepository.class);
-    private       UserService    userService;
+    private final UserRepository  userRepository  = Mockito.mock(UserRepository.class);
+    private final PasswordEncoder passwordEncoder = Mockito.mock(PasswordEncoder.class);
+    private       UserService     userService;
 
     @BeforeEach
     public void beforeEach() {
-        this.userService = new UserService(userRepository);
+        this.userService = new UserService(userRepository, passwordEncoder);
     }
 
 
@@ -39,11 +41,14 @@ class UserServiceTest {
                 .build();
 
         // When
-        when(userService.join(any(User.class)))
-                .then(returnsFirstArg());
+        when(userService.join(user)).then(returnsFirstArg());
         User newUser = userService.join(user);
 
         // Then
-        assertEquals(user.getEmail(), newUser.getEmail());
+        assertAll(
+                () -> assertEquals(user.getEmail(), newUser.getEmail()),
+                () -> assertEquals(user.getContact(), newUser.getContact()),
+                () -> assertEquals(user.getNickname(), newUser.getNickname())
+        );
     }
 }

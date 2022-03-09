@@ -23,6 +23,7 @@ public class User extends BaseTimeEntity {
     @Column(name = "contact", nullable = false, unique = true)
     private String contact;
 
+    @Setter // 패스워드 암호화 된 값을 지정하기 위한 @Setter 설정
     @Column(name = "password", nullable = false)
     private String password;
 
